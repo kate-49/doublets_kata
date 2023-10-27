@@ -2,6 +2,8 @@ package doublets_kata
 
 import (
 	"bufio"
+	"errors"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -38,13 +40,52 @@ func CreateSolver(input string) (Solver, error) {
 }
 
 func (s *Solver) Run() ([]string, error) {
+	s.Output = append(s.Output, s.StartElement)
+	secondWord, err := s.FindNextWord(s.StartElement)
+	if err != nil {
+		return nil, err
+	}
+
+	s.Output = append(s.Output, secondWord)
+	fmt.Println("second word")
+	fmt.Println(secondWord)
+	thirdWord, err := s.FindNextWord(secondWord)
+	if err != nil {
+		return nil, err
+	}
+
+	s.Output = append(s.Output, thirdWord)
+	fmt.Println("third word")
+	fmt.Println(thirdWord)
+
+	fourthWord, err := s.FindNextWord(thirdWord)
+	if err != nil {
+		return nil, err
+	}
+
+	s.Output = append(s.Output, fourthWord)
+	fmt.Println("fourth word")
+	fmt.Println(fourthWord)
+
+	fifthWord, err := s.FindNextWord(fourthWord)
+	if err != nil {
+		return nil, err
+	}
+
+	s.Output = append(s.Output, fifthWord)
+	fmt.Println("fifthWord word")
+	fmt.Println(fifthWord)
+
+	return s.Output, nil
+}
+
+func (s *Solver) FindNextWord(CurrentWord string) (string, error) {
 	var potentialWords []string
 	for _, st := range s.Dictionary {
-		//check that 3 of the letters match current word and are in same place
-		if st != s.StartElement {
+		if s.CheckIfWordIsValid(st) {
 			matchingLetters := 0
-			for i, _ := range s.StartElement {
-				if strings.Contains(st, string(s.StartElement[i])) && (string(st[i]) == string(s.StartElement[i])) {
+			for i, _ := range CurrentWord {
+				if strings.Contains(st, string(CurrentWord[i])) && (string(st[i]) == string(CurrentWord[i])) {
 					matchingLetters++
 				}
 			}
@@ -53,5 +94,18 @@ func (s *Solver) Run() ([]string, error) {
 			}
 		}
 	}
-	return potentialWords, nil
+	if len(potentialWords) == 1 {
+		return potentialWords[0], nil
+	} else {
+		return "", errors.New("more than one option found for next word")
+	}
+}
+
+func (s *Solver) CheckIfWordIsValid(newWord string) bool {
+	for _, v := range s.Output {
+		if v == newWord {
+			return false
+		}
+	}
+	return true
 }
