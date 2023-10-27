@@ -41,41 +41,24 @@ func CreateSolver(input string) (Solver, error) {
 
 func (s *Solver) Run() ([]string, error) {
 	s.Output = append(s.Output, s.StartElement)
-	secondWord, err := s.FindNextWord(s.StartElement)
+	returnedWord, err := s.FindNextWord(s.StartElement)
 	if err != nil {
 		return nil, err
 	}
 
-	s.Output = append(s.Output, secondWord)
-	fmt.Println("second word")
-	fmt.Println(secondWord)
-	thirdWord, err := s.FindNextWord(secondWord)
-	if err != nil {
-		return nil, err
+	for {
+		if returnedWord == s.EndElement {
+			s.Output = append(s.Output, returnedWord)
+			break
+		}
+		s.Output = append(s.Output, returnedWord)
+		fmt.Println("word")
+		fmt.Println(returnedWord)
+		returnedWord, err = s.FindNextWord(returnedWord)
+		if err != nil {
+			return nil, err
+		}
 	}
-
-	s.Output = append(s.Output, thirdWord)
-	fmt.Println("third word")
-	fmt.Println(thirdWord)
-
-	fourthWord, err := s.FindNextWord(thirdWord)
-	if err != nil {
-		return nil, err
-	}
-
-	s.Output = append(s.Output, fourthWord)
-	fmt.Println("fourth word")
-	fmt.Println(fourthWord)
-
-	fifthWord, err := s.FindNextWord(fourthWord)
-	if err != nil {
-		return nil, err
-	}
-
-	s.Output = append(s.Output, fifthWord)
-	fmt.Println("fifthWord word")
-	fmt.Println(fifthWord)
-
 	return s.Output, nil
 }
 
