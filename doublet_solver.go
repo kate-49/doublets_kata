@@ -80,6 +80,7 @@ func (s *Solver) FindNextWord(CurrentWord string) (string, error) {
 	if len(potentialWords) == 1 {
 		return potentialWords[0], nil
 	} else {
+		fmt.Println(potentialWords)
 		return "", errors.New("more than one option found for next word")
 	}
 }
@@ -89,6 +90,9 @@ func (s *Solver) CheckIfWordIsValid(newWord string) bool {
 		if v == newWord {
 			return false
 		}
+	}
+	if len(newWord) != len(s.StartElement) {
+		return false
 	}
 	return true
 }
