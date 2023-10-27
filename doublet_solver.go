@@ -63,7 +63,7 @@ func (s *Solver) FindNextWord(CurrentWord string) string {
 					matchingLetters++
 				}
 			}
-			if matchingLetters >= 3 {
+			if matchingLetters >= len(CurrentWord)-1 {
 				potentialWords = append(potentialWords, st)
 			}
 		}
@@ -71,10 +71,6 @@ func (s *Solver) FindNextWord(CurrentWord string) string {
 	if len(potentialWords) == 1 {
 		return potentialWords[0]
 	} else {
-		fmt.Println(potentialWords)
-		fmt.Println(potentialWords[0])
-		fmt.Println(potentialWords[1])
-
 		word1 := 0
 		word2 := 0
 		for i, _ := range s.EndElement {
