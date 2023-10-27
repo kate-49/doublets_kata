@@ -14,7 +14,7 @@ func Test_E2E_Simple_Inputs(t *testing.T) {
 		{Input: "head tail", ExpectedOutput: []string{"head", "heal", "teal", "tell", "tall", "tail"}},
 		{Input: "door lock", ExpectedOutput: []string{"door", "boor", "book", "look", "lock"}},
 		{Input: "bank loan", ExpectedOutput: []string{"bank", "bonk", "book", "look", "loon", "loan"}},
-		//{Input: "wheat bread", ExpectedOutput: []string{"wheat", "cheat", "cheap", "creep", "creed", "breed", "bread"}},
+		{Input: "wheat bread", ExpectedOutput: []string{"wheat", "cheat", "cheap", "cheep", "creep", "creed", "breed", "bread"}},
 	}
 	for k, tc := range tests {
 		t.Run("scenario "+strconv.Itoa(k+1)+" given:"+tc.Input, func(t *testing.T) {

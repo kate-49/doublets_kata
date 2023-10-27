@@ -2,7 +2,6 @@ package doublets_kata
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strings"
 )
@@ -71,21 +70,29 @@ func (s *Solver) FindNextWord(CurrentWord string) string {
 	if len(potentialWords) == 1 {
 		return potentialWords[0]
 	} else {
-		word1 := 0
-		word2 := 0
+		wordValues := map[string]int{}
+		for _, s := range potentialWords {
+			wordValues[s] = 0
+		}
+
 		for i, _ := range s.EndElement {
-			if string(potentialWords[0][i]) == string(s.EndElement[i]) {
-				word1++
-			}
-			if string(potentialWords[1][i]) == string(s.EndElement[i]) {
-				word2++
+			for i2, _ := range wordValues {
+				if string(i2[i]) == string(s.EndElement[i]) {
+					wordValues[i2]++
+				}
 			}
 		}
-		if word1 > word2 {
-			return potentialWords[0]
-		} else {
-			return potentialWords[1]
+
+		max := 0
+		returnableValue := ""
+		for s, i := range wordValues {
+			if i > max {
+				returnableValue = s
+				max = i
+			}
 		}
+
+		return returnableValue
 	}
 }
 
@@ -99,25 +106,4 @@ func (s *Solver) CheckIfWordIsValid(newWord string) bool {
 		return false
 	}
 	return true
-}
-
-func (s *Solver) CheckWhichWordIsCloserToFinalWord(potentialWords []string) string {
-	//words := map[string]int{}
-	//matchingLetters := 0
-	fmt.Println("potential words")
-	fmt.Println(potentialWords)
-	//for i, _ := range potentialWords {
-	//	fmt.Println("word")
-	//	fmt.Println(potentialWords[i])
-	//	//for _, letter := range s.EndElement {
-	//	//	if strings.Contains(word, string(letter)) {
-	//	//		fmt.Println("element")
-	//	//		fmt.Println(string(letter))
-	//	//		matchingLetters++
-	//	//	}
-	//	//}
-	//	//words[word] = matchingLetters
-	//}
-	//fmt.Println(words)
-	return "test"
 }
