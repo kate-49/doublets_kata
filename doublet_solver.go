@@ -2,7 +2,6 @@ package doublets_kata
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -41,10 +40,7 @@ func CreateSolver(input string) (Solver, error) {
 
 func (s *Solver) Run() ([]string, error) {
 	s.Output = append(s.Output, s.StartElement)
-	returnedWord, err := s.FindNextWord(s.StartElement)
-	if err != nil {
-		return nil, err
-	}
+	returnedWord := s.FindNextWord(s.StartElement)
 
 	for {
 		if returnedWord == s.EndElement {
@@ -52,17 +48,12 @@ func (s *Solver) Run() ([]string, error) {
 			break
 		}
 		s.Output = append(s.Output, returnedWord)
-		fmt.Println("word")
-		fmt.Println(returnedWord)
-		returnedWord, err = s.FindNextWord(returnedWord)
-		if err != nil {
-			return nil, err
-		}
+		returnedWord = s.FindNextWord(returnedWord)
 	}
 	return s.Output, nil
 }
 
-func (s *Solver) FindNextWord(CurrentWord string) (string, error) {
+func (s *Solver) FindNextWord(CurrentWord string) string {
 	var potentialWords []string
 	for _, st := range s.Dictionary {
 		if s.CheckIfWordIsValid(st) {
@@ -78,10 +69,27 @@ func (s *Solver) FindNextWord(CurrentWord string) (string, error) {
 		}
 	}
 	if len(potentialWords) == 1 {
-		return potentialWords[0], nil
+		return potentialWords[0]
 	} else {
 		fmt.Println(potentialWords)
-		return "", errors.New("more than one option found for next word")
+		fmt.Println(potentialWords[0])
+		fmt.Println(potentialWords[1])
+
+		word1 := 0
+		word2 := 0
+		for i, _ := range s.EndElement {
+			if string(potentialWords[0][i]) == string(s.EndElement[i]) {
+				word1++
+			}
+			if string(potentialWords[1][i]) == string(s.EndElement[i]) {
+				word2++
+			}
+		}
+		if word1 > word2 {
+			return potentialWords[0]
+		} else {
+			return potentialWords[1]
+		}
 	}
 }
 
@@ -95,4 +103,25 @@ func (s *Solver) CheckIfWordIsValid(newWord string) bool {
 		return false
 	}
 	return true
+}
+
+func (s *Solver) CheckWhichWordIsCloserToFinalWord(potentialWords []string) string {
+	//words := map[string]int{}
+	//matchingLetters := 0
+	fmt.Println("potential words")
+	fmt.Println(potentialWords)
+	//for i, _ := range potentialWords {
+	//	fmt.Println("word")
+	//	fmt.Println(potentialWords[i])
+	//	//for _, letter := range s.EndElement {
+	//	//	if strings.Contains(word, string(letter)) {
+	//	//		fmt.Println("element")
+	//	//		fmt.Println(string(letter))
+	//	//		matchingLetters++
+	//	//	}
+	//	//}
+	//	//words[word] = matchingLetters
+	//}
+	//fmt.Println(words)
+	return "test"
 }
